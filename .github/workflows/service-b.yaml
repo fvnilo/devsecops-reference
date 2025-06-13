@@ -29,7 +29,7 @@ jobs:
           go test ./...
 
       - name: Trivy scan (FS)
-        uses: aquasecurity/trivy-action@0.28
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
           scan-ref: apps/service-b
@@ -40,9 +40,9 @@ jobs:
 
       - name: Push Docker image
         run: |
-          echo "docker push myorg/service-b:${{ github.sha }}"
+          echo "docker push fvnilo/service-b:${{ github.sha }}"
 
       - name: Deploy to Dev
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/main'
         run: |
           echo "Deploying service-b to Dev with image fvnilo/service-b:${{ github.sha }}"
