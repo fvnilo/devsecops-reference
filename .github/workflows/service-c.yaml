@@ -1,0 +1,48 @@
+name: Service C CI/CD
+
+on:
+  push:
+    paths:
+      - 'apps/service-c/**'
+  pull_request:
+    paths:
+      - 'apps/service-c/**'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        working-directory: apps/service-c
+        run: npx eslint .
+
+      - name: Build Docker image
+        run: |
+          docker build -t fvnilo/service-c:${{ github.sha }} -f apps/service-c/Dockerfile .
+
+      - name: Trivy scan (FS)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: fvnilo/service-c:${{ github.sha }}
+          format: table
+          exit-code: 0
+          vuln-type: os,library
+ 
+      - name: Push Docker image
+        run: |
+          echo "docker push fvnilo/service-b:${{ github.sha }}"
+
+      - name: Deploy to Dev
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "Deploying service-c to Dev with image fvnilo/service-c:${{ github.sha }}"

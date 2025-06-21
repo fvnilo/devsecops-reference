@@ -1,0 +1,30 @@
+{
+  "name": "devsecops-reference",
+  "version": "1.0.0",
+  "description": "https://github.com/fvnilo/devsecops-reference",
+  "keywords": [
+    "monorepo",
+    "workspace",
+    "nodejs",
+    "golang"
+  ],
+  "homepage": "https://github.com/fvnilo/devsecops-reference#readme",
+  "bugs": {
+    "url": "https://github.com/fvnilo/devsecops-reference/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fvnilo/devsecops-reference.git"
+  },
+  "license": "MIT",
+  "author": "Ny Fanilo Andrianjafy",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "libs/*",
+    "apps/*"
+  ]
+}
