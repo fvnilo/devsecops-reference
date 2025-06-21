@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/fvnilo/devsecops-reference/libs/reverse_go"
 )
 
 func main() {
-	http.HandleFunc("/a", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello from Service B")
+	http.HandleFunc("/b", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, reverse_go.String("Hello from Service B"))
 	})
 
-	log.Println("Service B listening on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Service B listening on :8081")
+	log.Fatal(http.ListenAndServe(":8081", nil))
 }

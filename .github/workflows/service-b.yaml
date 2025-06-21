@@ -11,9 +11,6 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/service-b
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +20,9 @@ jobs:
           go-version: '1.24'
 
       - name: Lint and test
+        working-directory: apps/service-b
         run: |
+          go mod tidy
           go fmt ./...
           go vet ./...
           go test ./...
@@ -36,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t fvnilo/service-b:${{ github.sha }} .
+          docker build -t fvnilo/service-b:${{ github.sha }} -f apps/service-b/Dockerfile .
 
       - name: Push Docker image
         run: |

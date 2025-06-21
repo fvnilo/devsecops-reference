@@ -1,14 +1,20 @@
-FROM golang:1.24-alpine
+FROM golang:1.24-alpine AS build
 
 WORKDIR /app
 
-COPY go.mod ./
-RUN go mod tidy
+RUN mkdir -p libs apps
 
-COPY . .
+COPY ./libs/reverse_go ./libs/reverse_go
+COPY ./apps/service-b ./apps/service-b
 
-RUN go build -o server .
+RUN go work init ./apps/service-b ./libs/reverse_go
+RUN go build -o server ./apps/service-b
 
-EXPOSE 8080
+FROM alpine:3.22
+
+WORKDIR /app
+COPY --from=build /app/server .
+
+EXPOSE 8081
 
 CMD ["./server"]
