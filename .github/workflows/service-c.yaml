@@ -3,10 +3,14 @@ name: Service C CI/CD
 on:
   push:
     paths:
+      - '.github/workflows/service-a.yaml'
       - 'apps/service-c/**'
+      - 'libs/echo/**'
   pull_request:
     paths:
+      - '.github/workflows/service-a.yaml'
       - 'apps/service-c/**'
+      - 'libs/echo/**'
 
 jobs:
   ci:
